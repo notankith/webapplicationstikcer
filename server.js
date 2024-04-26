@@ -1,26 +1,18 @@
-// server.js
-const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const config = require('./config'); // Import the configuration
+const { MongoClient } = require('mongodb');
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-const MONGODB_URI = process.env.MONGODB_URI || config.mongoURI; // Use the MongoDB URI from the configuration
+// Retrieve MongoDB connection string from environment variable
+const uri = process.env.MONGODB_URI;
 
-// Connect to MongoDB
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('Error connecting to MongoDB:', err));
+// Create a new MongoClient
+const client = new MongoClient(uri);
 
-// Define schema for presets
-// ...
+// Connect to the MongoDB cluster
+client.connect(err => {
+  if (err) {
+    console.error('Error connecting to MongoDB:', err);
+    return;
+  }
+  console.log('Connected to MongoDB');
 
-// Define API endpoints
-// ...
-
-app.use(bodyParser.json());
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  // Define your database collections and implement CRUD operations here
 });
